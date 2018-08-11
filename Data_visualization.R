@@ -79,3 +79,35 @@ NHANES %>% filter(Gender == "male" & AgeDecade==" 40-49") %>%
       group_by(Race1) %>% summarize(average = mean(BPSysAve, na.rm = TRUE), 
                 standard_deviation = sd(BPSysAve, na.rm=TRUE)) %>%
       arrange(average) #arranges the values by the average of the blood presure in ascending order
+
+
+#####Life expectancy vs fertility - the GAPMINDER FOUNDATION#####
+library(dplyr)
+library(ggplot2)
+library(dslabs)
+data(gapminder)
+gapminder %>% filter(continent=="Africa" & year == 2012) %>%
+  ggplot(aes(fertility, life_expectancy, color = region)) +
+  geom_point()
+df <- gapminder %>% 
+  filter(continent=="Africa" & year == 2012 & fertility <=3 & life_expectancy>=70) %>% select(country, region) #Creates a table showing the country and region for the African countries that in 2012 had fertility rates of 3 or less and life expectancies of at least 70
+years <- 1960:2010
+countries <- c("United States", "Vietnam")
+tab <- gapminder %>% filter(year %in% years & country %in% countries) #The Vietnam War lasted from 1955 to 1975. Do the data support war having a negative effect on life expectancy? We will create a time series plot that covers the period from 1960 to 2010 of life expectancy for Vietnam and the United States, using color to distinguish the two countries.
+p <- tab %>% ggplot(aes(x=year,y=life_expectancy,color=country)) + geom_line() #plots the data for the two countries.
+daydollars <- gapminder %>% mutate(dollars_per_day = gdp/population/365) %>% filter(continent == "Africa" & year == 2010 & !is.na(dollars_per_day)) #calculates and plots dollars per day for African countries in 2010 using GDP data.
+daydollars %>% ggplot(aes(dollars_per_day)) + geom_density() + scale_x_continuous(trans = "log2") #plots the smooth density plot using a log (base 2) x axis.
+gapminder %>% 
+  mutate(dollars_per_day = gdp/population/365) %>%
+  filter(continent == "Africa" & year %in% c(1970,2010) & !is.na(dollars_per_day)) %>%
+ ggplot(aes(dollars_per_day, fill = region)) + 
+  geom_density(bw=0.5, position = "stack") + 
+  scale_x_continuous(trans = "log2") + 
+  facet_grid(year ~ .) #combines multiple plotting tools to create density plots for multiple years.
+  gapminder %>% 
+  mutate(dollars_per_day = gdp/population/365) %>%
+  filter(continent == "Africa" & year %in% c(1970, 2010) & !is.na(dollars_per_day) & !is.na(infant_mortality)) %>%
+  ggplot(aes(dollars_per_day, infant_mortality, color = region, label = country)) +
+  geom_text() + 
+  scale_x_continuous(trans = "log2") +
+  facet_grid(year~.) #shows changes in the infant mortality and dollars per day patterns African countries between 1970 and 2010.  
