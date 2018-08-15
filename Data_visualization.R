@@ -1,3 +1,5 @@
+# this script focuses on several R basic commands to use when working with a dataset modified according to what I find interesting in this dataset
+
 # this script focuses on several Data visualization basic commands to use when working with a dataset modified according to what I find interesting in this dataset
 
 install.packages("dslabs") #install the package specifically written for this course 
