@@ -1,17 +1,49 @@
-# this script focuses on several R basic commands to use when working with a dataset modified according to what I find interesting in this dataset
-install.packages("magrittr")
-library(magrittr) #needed to be able to use the pipe operator
-install.packages("dslabs") #install the package specifically written for this course 
-#install.packages("dplyr") #install dplyr - a grammar of data manipulation - THIS COMMAND DID NOT INSTALL THE FINAL VERSION OF dplyr
-devtools::install_github("hadley/dplyr") #but this worked
-library(dslabs) #load the packages
-library(dplyr)
-data(murders) #load the data with which the following script will work
+---
+ctitle: "DataScience-HarvardX"
+author: "oanapy"
+date: "August 21, 2018"
+output: html_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## DataScience-HarvardX
+
+This script focuses on several R basic commands to use when working with a dataset modified according to what I find interesting in this dataset.
+
+#### R_basics
+
+I installed the following packages: 
+
+*   "magrittr" - needed to be able to use the pipe operator
+*   "dslabs" - install the package specifically written for this course
+*   "dplyr" - a grammar of data manipulation 
+
+with 
+
+* install.packages("PACKAGE_NAME") for the first two and 
+* devtools::install_github("hadley/dplyr") for the latter.
+ 
+Load the packages
+```{r echo}
+library(magrittr) 
+library(dslabs)
+library(dplyr)
+```
+Load the data with which the script will work
+```{r}
+data(murders)
+```
+Analyze the data structure
+```{r}
 str(murders) #offers short description of the data file
 names(murders) #designed to extract the column names from a data frame. Can also be used to associate the elements from a vector to another vector (temperatures to cities for example)
 class(murders) #used to determine the class of an object (character, numeric or logical)
+```
 
+```{r}
 a <- murders$abb # Use the accessor($) to extract state abbreviations from the dataset and assign it to a
 b <- murders[["abb"]] #the double square brackets ar an equivalent for the $ (accessor)
 identical(a, b) # We can confirm these two are the same, it return a logical variable. TRUE in our case.
@@ -19,11 +51,10 @@ identical(a, b) # We can confirm these two are the same, it return a logical var
 
 length(levels(murders$region)) #nested way to determine the number of unique categories contained in the region variable
 
-table(murders$region) #table() takes a vector as input and returns the frequency of each unique element in the vector
+table(murders$region) #returns the frequency of each unique element in the vector
 
 sorted_pop <- sort(murders$population) #sorts the population values in ascending order and save the result in an object
-ordered_pop <- order(murders$population) #order() returns the index vector needed to sort the vector. So sort(x) and x[order(x)] are equivalent
-
+ordered_pop <- order(murders$population) #returns the index vector needed to sort the vector. So sort(x) and x[order(x)] are equivalent
 
 states <- murders$state # Defines a variable states to be the state names from the murders data frame
 ranks <- rank(murders$population) # Defines a variable ranks to determine the population size ranks 
@@ -48,4 +79,4 @@ murders <- mutate(murders, population_in_millions = population / 10^6) #adds a n
 select(murders, state, population) # filters data by subsetting columns. In this case shows only the state and the population columns from the murders dataset
 filter(murders, state == "New York") #used to choose specific rows of the data frame
 murders%>%filter(region%in%c("Northeast", "West"))%>%select(state) #piping multiple commands on a dataset following a typical workflow: DATA -> FILTER -> SELECT
-# 
+```
