@@ -1,0 +1,1 @@
+faithful = faithful.with_columns('duration_in_su', (faithful.column('duration') - np.average(faithful.column('duration'))/np.std(faithful.column('duration')), 'wait_in_su', (faithful.column('wait') - np.average(faithful.column('wait'))/np.std(faithful.column('wait')))
